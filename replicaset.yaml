@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: etape-2-service
+  labels:
+    app: replicat-set
+    tier: etape-2
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      tier: etape-2
+  template:
+    metadata:
+      labels:
+        tier: etape-2
+    spec:
+      containers:
+        - name: replica-set-container
+          image: registry.cluster.wik.cloud/public/echo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: replica-set-service
+spec:
+  selector:
+    tier: etape-2
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
